@@ -1,11 +1,18 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'STACK_NAME', defaultValue: 'example-s3-stack', description: 'CloudFormation Stack Name')
+        string(name: 'TEMPLATE_FILE', defaultValue: '01_s3cft.yml', description: 'Path to CloudFormation Template File')
+        string(name: 'BUCKET_NAME', defaultValue: 'aman-s3-bucket-0718', description: 'Name of the S3 bucket')
+        string(name: 'AWS_DEFAULT_REGION', defaultValue: 'us-east-1', description: 'AWS Region')
+    }
+
     environment {
-        AWS_DEFAULT_REGION = 'us-east-1'
-        STACK_NAME = 'example-s3-stack'
-        TEMPLATE_FILE = '01_s3cft.yml'
-        BUCKET_NAME = 'aman-s3-bucket-0718'  // Use your unique bucket name
+        AWS_DEFAULT_REGION = "${params.AWS_DEFAULT_REGION}"
+        STACK_NAME = "${params.STACK_NAME}"
+        TEMPLATE_FILE = "${params.TEMPLATE_FILE}"
+        BUCKET_NAME = "${params.BUCKET_NAME}"
     }
 
     stages {
