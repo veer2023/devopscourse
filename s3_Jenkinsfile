@@ -1,21 +1,23 @@
 pipeline {
     agent any
-
     parameters {
-        string(name: 'STACK_NAME', defaultValue: 's3-demo-stack', description: 'CloudFormation Stack Name')
-        string(name: 'TEMPLATE_NAME', defaultValue: '01_s3cft.yml', description: 'CloudFormation Template File Name')
+        string(name: 'STACK_NAME', defaultValue: 'example-s3-stack', description: 'CloudFormation Stack Name')
+        string(name: 'TEMPLATE_NAME', defaultValue: '01_s3cft.yml', description: 'CloudFormation Template File')
         choice(
             name: 'REGION',
             choices: ['us-east-1', 'us-east-2', 'us-west-2'],
-            description: 'AWS Region'
+            description: 'AWS Region to deploy the stack'
         )
+    }
+
+    environment {
+        AWS_DEFAULT_REGION = "${params.REGION}"
     }
 
     stages {
         stage('Checkout Repository') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']],
-                    userRemoteConfigs: [[url: 'https://github.com/riteshbehal/devopscourse.git']]])
+                git url: 'https://github.com/riteshbehal/devopscourse.git'
             }
         }
 
@@ -24,9 +26,10 @@ pipeline {
                 script {
                     sh """
                         aws cloudformation deploy \
-                        --stack-name ${params.STACK_NAME} \
-                        --template-file ${params.TEMPLATE_NAME} \
-                        --region ${params.REGION}
+                          --stack-name ${params.STACK_NAME} \
+                          --template-file ${params.TEMPLATE_NAME} \
+                          --region ${params.REGION} \
+                          --capabilities CAPABILITY_NAMED_IAM
                     """
                 }
             }
