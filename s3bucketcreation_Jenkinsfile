@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'      // change if needed
-        S3_BUCKET = 'my-unique-67vgi' // bucket name must be globally unique
+        S3_BUCKET = 'myunique24082027673fg' // bucket name must be globally unique
     }
 
     stages {
