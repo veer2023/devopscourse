@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        AWS_DEFAULT_REGION = 'us-east-1'      // change if needed
+        AWS_DEFAULT_REGION = 'ap-southeast-1'      // change if needed
         S3_BUCKET = 'myunique24082027673fg' // bucket name must be globally unique
     }
 
